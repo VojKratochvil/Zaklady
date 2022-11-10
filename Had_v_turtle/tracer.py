@@ -25,7 +25,9 @@ body_parts = []
 food = Turtle("circle")
 food.color("red")
 food.penup()
-food.goto(100, 100)
+x_start = random.randint(-screen_width / 2 + 20, screen_width / 2 + 20)
+y_start = random.randint(-screen_height / 2 + 20, screen_height / 2 + 20)
+food.goto(x_start, y_start)
 
 def move():
     if head.direction == "up":
@@ -68,10 +70,14 @@ screen.onkeypress(move_right, "d")
 
 # Pohyb plynulý a hlavní cyklus
 while True:
+    screen.update()
+
+
+
     move()
     if head.distance(food) < 20:
-        x = random.randint(-screen_width/2, screen_width/2)
-        y = random.randint(-screen_height/2, screen_height/2)
+        x = random.randint(-screen_width/2 + 20, screen_width/2 + 20)
+        y = random.randint(-screen_height/2 + 20, screen_height/2 + 20)
         food.goto(x, y)
 
         # Hadí tělo
@@ -81,12 +87,19 @@ while True:
         new_body_part.penup()
         body_parts.append(new_body_part)
 
-        if len(body_parts) > 0:
-            x = head.xcor()
-            y = head.ycor()
-            body_parts[0].goto(x, y)
-    time.sleep(0.1)
-    screen.update()
+    for index in range(len(body_parts) -1, 0, -1):
+        x = body_parts[index - 1].xcor()
+        y = body_parts[index - 1].ycor()
+        body_parts[index].goto(x, y)
+
+    if len(body_parts) > 0:
+        x = head.xcor()
+        y = head.ycor()
+        body_parts[0].goto(x, y)
+
+    move()
+    time.sleep(0.15)
+
 
 
 # for _ in range(80):
